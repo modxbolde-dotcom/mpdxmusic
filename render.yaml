@@ -1,0 +1,89 @@
+# ───────────────────────────────────────────────────────────────
+#  Render Blueprint — Telegram Music Bot
+#
+#  1. Push this repository to your own GitHub account.
+#  2. On Render: New → Blueprint → pick this repository.
+#  3. Fill in the environment variables below when Render asks.
+#     (Every one of them is marked `sync: false`, so nothing secret
+#      is ever stored in this file or in Git.)
+#
+#  The bot is a long-running worker, not a web site — it has no public
+#  URL and no open port. Render's "Background Worker" service type is
+#  the correct one, and it is already selected here.
+# ───────────────────────────────────────────────────────────────
+services:
+  - type: worker
+    name: music-bot
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter          # 512 MB. Use "standard" for busier bots.
+    region: oregon         # frankfurt / singapore / ohio / virginia also work
+    autoDeploy: true
+    envVars:
+      # ── Branding ───────────────────────────────────────────────
+      - key: BOT_NAME
+        sync: false
+      - key: BOT_TAGLINE
+        sync: false
+
+      # ── Telegram ───────────────────────────────────────────────
+      - key: API_ID
+        sync: false
+      - key: API_HASH
+        sync: false
+      - key: BOT_TOKEN
+        sync: false
+      - key: BOT_USERNAME
+        sync: false
+
+      # ── Database ───────────────────────────────────────────────
+      - key: MONGO_DB_URI
+        sync: false
+
+      # ── Owner / logging ────────────────────────────────────────
+      - key: OWNER_ID
+        sync: false
+      - key: OWNER_NAME
+        sync: false
+      - key: LOG_GROUP_ID
+        sync: false
+      - key: MUSIC_ARCHIVE_CHANNEL_ID
+        sync: false
+
+      # ── Optional extras ────────────────────────────────────────
+      - key: YOUTUBE_API_KEY
+        sync: false
+      - key: YTDLP_PROXY
+        sync: false
+      - key: GENIUS_API_TOKEN
+        sync: false
+
+      # ── Runtime tuning (safe defaults for the starter plan) ────
+      - key: MEMORY_LIMIT_MB
+        value: "512"
+      - key: AUTOPLAY
+        value: "true"
+      - key: AUDIO_DIRECT_STREAM
+        value: "false"
+      - key: PREFETCH_ENABLED
+        value: "false"
+      - key: ARCHIVE_REMOTE_PLAY
+        value: "true"
+      - key: TG_PROXY_CACHE_MB
+        value: "16"
+      - key: TG_PROXY_CACHE_CHUNKS
+        value: "8"
+      - key: TG_PROXY_FILE_SESSIONS
+        value: "1"
+      - key: TG_PROXY_CONCURRENCY
+        value: "2"
+      - key: SONG_CACHE_MB
+        value: "32"
+      - key: MEM_SOFT_LIMIT_MB
+        value: "260"
+      - key: MEM_CHECK_SECONDS
+        value: "3"
+      - key: MUSIC_ONLY_MODE
+        value: "false"
+      - key: MALLOC_ARENA_MAX
+        value: "2"

@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+pycache/
+*.pyc
+.DS_Store
+Thumbs.db
